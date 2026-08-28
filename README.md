@@ -93,13 +93,18 @@ está no `script.js`, na linha `filme.playbackRate = 2`.
 4. Framework preset: **Other**. Não precisa de build command.
 5. Deploy. Copie a URL, algo como `https://martinha.vercel.app`.
 
-## Gerar o QR code
+## O cartão com o QR code
 
-1. Abra um gerador (ex.: [qr-code-generator.com](https://www.qr-code-generator.com) ou o próprio da Vercel).
-2. Cole a URL final do site.
-3. Baixe em PNG alto e imprima no cartão que acompanha os chocolates e a blusa.
+`cartao-qr.png` — 2128 × 3072 px, pronto para imprimir.
 
-Se o cartão já estiver impresso, cole o QR num adesivo pequeno.
+- a **600 DPI** sai com 90 × 130 mm (tamanho de convite)
+- a **300 DPI** sai com 180 × 260 mm (quase uma folha A4)
+
+A linha tracejada em volta é o guia de corte. O QR aponta para
+`https://nomadautomacao-dot.github.io/martinha/`.
+
+Correção de erro alta (30%), então tolera dobra, tinta fraca e foto torta.
+Se mudar a URL do site, o cartão precisa ser refeito.
 
 ## Ver no computador
 
