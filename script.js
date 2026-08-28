@@ -53,22 +53,44 @@ const MOSTRAR_PEDIDO = true;
     depois(() => { steam.hidden = true; }, ms + 1400);
   }
 
-  /* ── ATO 1 · quebrar o lacre ─────────────────────────────────── */
+  /* ── ATO 1 · o filme do envelope ─────────────────────────────── */
 
-  const envelope = $('#envelope');
-  const seal = $('#seal');
+  const filme = $('#filme');
+  const abrir = $('#abrir');
+  const dica = $('#dica');
+  let jaAbriu = false;
 
-  seal.addEventListener('click', function () {
-    if (envelope.dataset.open) return;
-    envelope.dataset.open = '1';
+  filme.playbackRate = 2;          // 10s de video viram 5s
 
-    $('#wax').classList.add('is-broken');
-    $('.seal__shard--l').classList.add('is-flying');
-    $('.seal__shard--r').classList.add('is-flying');
+  // celular so deixa tocar sozinho se estiver mudo
+  const tentarTocar = () => {
+    const p = filme.play();
+    if (p && p.catch) p.catch(() => { dica.textContent = 'Toque para abrir'; });
+  };
+  if (filme.readyState >= 2) tentarTocar();
+  filme.addEventListener('loadeddata', tentarTocar, { once: true });
 
-    depois(() => { $('#flap').classList.add('is-open'); }, 260);
-    depois(() => { envelope.classList.add('is-gone'); }, 1150);
-    depois(() => { irPara('invite'); }, 1500);
+  // enquanto roda, o convite ja fica pronto por tras
+  filme.addEventListener('ended', function () {
+    dica.textContent = 'Toque para abrir o convite';
+    dica.classList.add('is-chamando');
+    filme.pause();
+  });
+
+  function abrirConvite() {
+    if (jaAbriu) return;
+    jaAbriu = true;
+    filme.pause();
+    $('.filme').classList.add('is-gone');
+    depois(() => irPara('invite'), 700);
+  }
+
+  abrir.addEventListener('click', abrirConvite);
+
+  // se o video nao carregar, ela nao pode ficar presa aqui
+  filme.addEventListener('error', function () {
+    dica.textContent = 'Toque para abrir o convite';
+    $('.filme').classList.add('sem-video');
   });
 
   /* ── ATO 2 · aceitar o convite (a explosão dourada) ──────────── */

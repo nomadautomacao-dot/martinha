@@ -226,97 +226,67 @@ a:hover {
   text-align: center;
 }
 
-.envelope {
+/* ── o filme de abertura ───────────────────────────────────────── */
+
+.filme {
   position: relative;
-  width: min(86vw, 326px);
-  aspect-ratio: 3 / 2;
-  filter: drop-shadow(0 26px 44px rgba(0, 0, 0, .66));
-  transition: transform 1s cubic-bezier(.22, 1, .36, 1), opacity .8s ease;
+  /* acima do grão de papel (z-index 60): a mistura "overlay" apagava
+     o dourado do lacre e deixava o vídeo barrento */
+  z-index: 61;
+  width: min(86vw, 340px);
+  aspect-ratio: 9 / 16;
+  max-height: 58vh;
+  border: 1px solid rgba(201, 162, 39, .45);
+  box-shadow: 0 26px 44px rgba(0, 0, 0, .66), 0 0 0 5px rgba(20, 18, 16, .6);
+  background: #0D0B09;
+  overflow: hidden;
+  transition: transform 1s cubic-bezier(.22, 1, .36, 1), opacity .7s ease;
 }
 
-.envelope.is-gone {
+.filme.is-gone {
   transform: translateY(-14px) scale(1.04);
   opacity: 0;
 }
 
-.envelope__paper,
-.envelope__sheen {
+.filme__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* a área toda é o botão: o dedo não precisa mirar */
+.filme__toque {
   position: absolute;
   inset: 0;
-  border-radius: 3px;
-}
-
-.envelope__paper {
-  background: linear-gradient(160deg, #EFE3C6 0%, #E2D2AB 52%, #D6C39A 100%);
-}
-
-.envelope__sheen {
-  background: linear-gradient(200deg, rgba(255, 255, 255, .35), rgba(0, 0, 0, .06) 40%, rgba(110, 20, 35, .06));
-}
-
-.envelope__pocket {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 66%;
-  background: linear-gradient(#E7DAB9, #D3BF93);
-  clip-path: polygon(0 100%, 0 0, 50% 62%, 100% 0, 100% 100%);
-}
-
-.envelope__flap {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 66%;
-  transform-origin: top center;
-  transform-style: preserve-3d;
-  transition: transform 1.05s cubic-bezier(.6, -0.02, .3, 1);
-  background: linear-gradient(#F4EACF, #E4D4AE);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
-}
-
-.envelope__flap.is-open {
-  transform: rotateX(-172deg);
-}
-
-.seal {
-  position: absolute;
-  left: 50%;
-  top: 58%;
-  transform: translate(-50%, -50%);
-  width: 88px;
-  height: 88px;
   border: 0;
-  padding: 0;
-  border-radius: 50%;
   background: none;
   cursor: pointer;
-  z-index: 3;
   -webkit-tap-highlight-color: transparent;
 }
 
-.seal__wax {
-  position: absolute;
-  inset: 8px;
-  border-radius: 50%;
+/* se o vídeo não carregar, ela ainda vê para onde tocar */
+.filme.sem-video {
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at 34% 28%, var(--gold-light) 0%, var(--gold) 38%, var(--gold-deep) 78%, #6B5316 100%);
-  animation: sealPulse 3.4s ease-in-out infinite;
-  transition: transform .5s ease, opacity .5s ease;
+  aspect-ratio: 3 / 2;
+  background: linear-gradient(160deg, #EFE3C6, #D6C39A);
 }
 
-.seal:hover .seal__wax {
-  transform: scale(1.06);
+.is-chamando {
+  animation: pulsarDica 2.2s ease-in-out infinite;
 }
 
-.seal__wax.is-broken {
-  animation: none;
-  transform: scale(.86);
-  opacity: 0;
+@keyframes pulsarDica {
+
+  0%,
+  100% {
+    opacity: .6;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .seal__ring {
@@ -324,47 +294,6 @@ a:hover {
   inset: 7px;
   border-radius: 50%;
   border: 1px dashed rgba(20, 18, 16, .35);
-}
-
-.seal__letter {
-  font-family: var(--title);
-  font-size: 32px;
-  font-weight: 700;
-  color: #3C2F0C;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .28);
-}
-
-.seal__shard {
-  position: absolute;
-  opacity: 0;
-}
-
-.seal__shard--l {
-  left: 12px;
-  top: 34px;
-  width: 26px;
-  height: 22px;
-  background: linear-gradient(var(--gold), var(--gold-deep));
-  clip-path: polygon(0 0, 100% 22%, 62% 100%, 8% 72%);
-}
-
-.seal__shard--r {
-  right: 10px;
-  top: 40px;
-  width: 22px;
-  height: 20px;
-  background: linear-gradient(#B8931F, #7C5F18);
-  clip-path: polygon(0 18%, 100% 0, 88% 84%, 18% 100%);
-}
-
-.seal__shard--l.is-flying {
-  opacity: 1;
-  animation: shardL .8s ease-out forwards;
-}
-
-.seal__shard--r.is-flying {
-  opacity: 1;
-  animation: shardR .8s .06s ease-out forwards;
 }
 
 /* ═══ ATO 2 · convite ════════════════════════════════════════════ */
@@ -1637,20 +1566,6 @@ a:hover {
 
   50% {
     box-shadow: 0 0 26px rgba(201, 162, 39, .55), 0 10px 22px rgba(0, 0, 0, .5);
-  }
-}
-
-@keyframes shardL {
-  to {
-    transform: translate(-46px, 34px) rotate(-58deg);
-    opacity: 0;
-  }
-}
-
-@keyframes shardR {
-  to {
-    transform: translate(46px, 30px) rotate(52deg);
-    opacity: 0;
   }
 }
 

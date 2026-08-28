@@ -61,10 +61,24 @@ No topo do `style.css`:
 Quem tiver “reduzir movimento” ligado no celular já recebe a versão calma
 automaticamente, sem precisar mexer em nada.
 
-## Som (opcional)
+## Som
 
-Crie a pasta `audio/` e coloque um MP3 curto em `audio/valsa.mp3`.
-Sem o arquivo, o botão “Som” fica no canto e avisa que a valsa não foi encontrada. Nada toca sozinho.
+`audio/valsa.mp3` — trecho de 1 minuto do tema de abertura da série,
+em loop e a 35% do volume. **Nada toca sozinho**: nenhum celular permite,
+então ela precisa tocar o botão “Som” no canto superior direito.
+Para trocar, basta substituir o arquivo mantendo o nome.
+
+## O vídeo de abertura
+
+`video/envelope.mp4` — toca sozinho, mudo, em velocidade 2× (os 10s viram 5s).
+Quando termina, o aviso embaixo muda para “toque para abrir o convite”.
+Ela pode tocar a qualquer momento para pular.
+
+Se o arquivo faltar ou não carregar, o site não trava: o aviso aparece
+mesmo assim e o toque leva ao convite.
+
+Para trocar por outro vídeo, substitua o arquivo mantendo o nome. A velocidade
+está no `script.js`, na linha `filme.playbackRate = 2`.
 
 ## Publicar na Vercel (grátis)
 
