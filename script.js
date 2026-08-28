@@ -1,9 +1,5 @@
-/* ═══════════════════════════════════════════════════════════════
-   A Idade Dourada — Miss Marta Nogueira
-   Ferrovia Adriel & Co.
-   ═══════════════════════════════════════════════════════════════ */
+/* A Idade Dourada · Martinha */
 
-/* Deixe false para esconder o pedido de namoro no final da viagem. */
 const MOSTRAR_PEDIDO = true;
 
 (function () {
@@ -26,12 +22,9 @@ const MOSTRAR_PEDIDO = true;
 
   const depois = (fn, ms) => setTimeout(fn, ms);
 
-  /* ── trocar de ato ───────────────────────────────────────────── */
-
   function irPara(nome) {
     Object.keys(atos).forEach((k) => { atos[k].hidden = k !== nome; });
     window.scrollTo(0, 0);
-    // reinicia a animação de entrada do ato que acabou de aparecer
     const alvo = atos[nome];
     alvo.style.animation = 'none';
     void alvo.offsetWidth;
@@ -39,11 +32,8 @@ const MOSTRAR_PEDIDO = true;
     observarReveals();
   }
 
-  /* ── vapor da locomotiva ─────────────────────────────────────── */
-
   function vapor(entao, ms) {
     steam.hidden = false;
-    // reinicia as animações dos quatro puffs
     $$('.steam__puff').forEach((p) => {
       p.style.animation = 'none';
       void p.offsetWidth;
@@ -53,8 +43,6 @@ const MOSTRAR_PEDIDO = true;
     depois(() => { steam.hidden = true; }, ms + 1400);
   }
 
-  /* ── ATO 1 · o filme do envelope ─────────────────────────────── */
-
   document.body.classList.add('abertura-ativa');
 
   const filme = $('#filme');
@@ -62,19 +50,17 @@ const MOSTRAR_PEDIDO = true;
   const dica = $('#dica');
   let jaAbriu = false;
 
-  filme.playbackRate = 2;          // 10s de video viram 5s
+  filme.playbackRate = 2;
 
-  // celular so deixa tocar sozinho se estiver mudo
   const tentarTocar = () => {
     const p = filme.play();
-    if (p && p.catch) p.catch(() => { dica.textContent = 'Toque para abrir'; });
+    if (p && p.catch) p.catch(() => { dica.textContent = 'Toque pra abrir'; });
   };
   if (filme.readyState >= 2) tentarTocar();
   filme.addEventListener('loadeddata', tentarTocar, { once: true });
 
-  // enquanto roda, o convite ja fica pronto por tras
   filme.addEventListener('ended', function () {
-    dica.textContent = 'Toque para abrir o convite';
+    dica.textContent = 'Toque pra abrir o convite';
     dica.classList.add('is-chamando');
     filme.pause();
   });
@@ -84,7 +70,6 @@ const MOSTRAR_PEDIDO = true;
     jaAbriu = true;
     filme.pause();
     $('#act-envelope').classList.add('is-gone');
-    // a trava so sai depois do zoom, senao a barra de rolagem pisca
     depois(() => {
       document.body.classList.remove('abertura-ativa');
       irPara('invite');
@@ -93,15 +78,11 @@ const MOSTRAR_PEDIDO = true;
 
   abrir.addEventListener('click', abrirConvite);
 
-  // se o video nao carregar, ela nao pode ficar presa aqui
   filme.addEventListener('error', function () {
-    dica.textContent = 'Toque para abrir o convite';
+    dica.textContent = 'Toque pra abrir o convite';
     $('#act-envelope').classList.add('sem-video');
   });
 
-  /* ── ATO 2 · aceitar o convite (a explosão dourada) ──────────── */
-
-  // gerador determinístico: o brilho é sempre o mesmo, sem Math.random
   function semente(s) {
     return function () {
       s = (s * 1103515245 + 12345) % 2147483648;
@@ -125,7 +106,6 @@ const MOSTRAR_PEDIDO = true;
     ring.className = 'magic__ring';
     partes.push(ring);
 
-    // faíscas que saem do centro
     for (let i = 0; i < 16; i++) {
       const ang = rnd() * Math.PI * 2;
       const dist = 14 + rnd() * 34;
@@ -147,7 +127,6 @@ const MOSTRAR_PEDIDO = true;
       partes.push(mote);
     }
 
-    // poeira dourada que desce depois
     for (let i = 0; i < 8; i++) {
       const size = 1.5 + rnd() * 2.5;
       const dust = document.createElement('span');
@@ -183,24 +162,16 @@ const MOSTRAR_PEDIDO = true;
     }, lento ? 400 : 2650);
   });
 
-  /* ── ATO 3 · embarcar ────────────────────────────────────────── */
-
   $('#board').addEventListener('click', function () {
     vapor(() => irPara('voyage'), 700);
   });
 
-  /* ── ATO 4 · fotos que faltam ────────────────────────────────── */
-
-  // se a foto não existir, some com o <img> e deixa o "M" dourado à mostra
   $$('.frame__img').forEach((img) => {
     img.addEventListener('error', function () {
       img.classList.add('is-missing');
     });
-    // imagem quebrada que já falhou antes do JS carregar
     if (img.complete && img.naturalWidth === 0) img.classList.add('is-missing');
   });
-
-  /* ── Estação III · virar as cartas ───────────────────────────── */
 
   $('#cards').addEventListener('click', function (e) {
     const btn = e.target.closest('.card');
@@ -209,8 +180,6 @@ const MOSTRAR_PEDIDO = true;
     btn.setAttribute('aria-pressed', aberta ? 'false' : 'true');
   });
 
-  /* ── Estação IV · validar cupons ─────────────────────────────── */
-
   $('#coupons').addEventListener('click', function (e) {
     const btn = e.target.closest('.coupon__btn');
     if (!btn || btn.disabled) return;
@@ -218,10 +187,8 @@ const MOSTRAR_PEDIDO = true;
     const carimbo = cupom && cupom.querySelector('.coupon__stamp');
     if (carimbo) carimbo.classList.add('is-stamped');
     btn.disabled = true;
-    btn.hidden = true;   // o carimbo toma o lugar dele
+    btn.hidden = true;
   });
-
-  /* ── O pedido ────────────────────────────────────────────────── */
 
   const proposal = $('#proposal');
   const proposalSeal = $('#proposalSeal');
@@ -233,7 +200,6 @@ const MOSTRAR_PEDIDO = true;
 
   let digitando = null;
 
-  // revela o texto letra por letra, na ordem de data-type
   function revelarTexto() {
     const els = $$('[data-type]').sort((a, b) => +a.dataset.type - +b.dataset.type);
     if (!els.length) return;
@@ -271,7 +237,6 @@ const MOSTRAR_PEDIDO = true;
     revelarTexto();
   });
 
-  // carimba o instante exato em que ela aceitou
   const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
     'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
@@ -290,8 +255,6 @@ const MOSTRAR_PEDIDO = true;
     yes.hidden = true;
   });
 
-  /* ── entrada suave ao rolar ──────────────────────────────────── */
-
   let io = null;
 
   function observarReveals() {
@@ -299,16 +262,10 @@ const MOSTRAR_PEDIDO = true;
     if (reduzido() || !('IntersectionObserver' in window)) return;
 
     setTimeout(function () {
-      // Só mexe em quem já está na tela: dentro de um ato escondido o
-      // transform computado vem "none" e a inclinação das molduras
-      // seria guardada errada, endireitando a galeria para sempre.
       const novos = $$('.js-reveal').filter((el) => !el.dataset.revealed && el.offsetParent !== null);
       if (!novos.length) return;
 
       novos.forEach((el) => {
-        // Guarda o transform original. As molduras da galeria vêm tortas
-        // por uma classe (rotate(var(--tilt))), não por style inline — sem
-        // ler o computado, elas endireitavam durante a animação de entrada.
         if (el.dataset.baseTf === undefined) {
           const atual = getComputedStyle(el).transform;
           el.dataset.baseTf = atual === 'none' ? '' : atual;
@@ -335,11 +292,8 @@ const MOSTRAR_PEDIDO = true;
 
   observarReveals();
 
-  /* ── som opcional (audio/valsa.mp3) ──────────────────────────── */
-
   const botaoSom = $('#sound');
 
-  // a primeira impressao e a cena, nao a interface: o botao entra depois
   depois(() => botaoSom.classList.add('is-visivel'), 2600);
 
   let valsa = null;
@@ -364,13 +318,11 @@ const MOSTRAR_PEDIDO = true;
       botaoSom.setAttribute('aria-label', 'Ligar o som da valsa');
     } else {
       const p = valsa.play();
-      if (p && p.catch) p.catch(function () { /* navegador barrou: o erro acima cuida */ });
+      if (p && p.catch) p.catch(function () { });
       botaoSom.setAttribute('aria-pressed', 'true');
       botaoSom.setAttribute('aria-label', 'Desligar o som da valsa');
     }
   });
-
-  /* ── atalho: link "ir à viagem" pula direto ──────────────────── */
 
   $('.skip').addEventListener('click', function (e) {
     e.preventDefault();
