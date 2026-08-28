@@ -1256,6 +1256,8 @@ a:hover {
 
 .coupon__stamp {
   position: absolute;
+  /* decorativo: fica por cima do botão, então não pode roubar o toque */
+  pointer-events: none;
   /* um pouco mais largo que a coluna, para o carimbo invadir de leve
      o papel — como um carimbo torto de verdade */
   width: 100px;
