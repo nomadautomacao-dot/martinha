@@ -26,7 +26,7 @@ const MOSTRAR_PEDIDO = true;
 
   const depois = (fn, ms) => setTimeout(fn, ms);
 
-  /* ── trocar de ato ───────────────────────────────────────────── */
+  /* ── trocar de ato ───────────────────────────────────────── */
 
   function irPara(nome) {
     Object.keys(atos).forEach((k) => { atos[k].hidden = k !== nome; });
@@ -91,7 +91,10 @@ const MOSTRAR_PEDIDO = true;
     }, 700);
   }
 
-  abrir.addEventListener('click', abrirConvite);
+  abrir.addEventListener('click', function () {
+    tocarValsa();
+    abrirConvite();
+  });
 
   // se o video nao carregar, ela nao pode ficar presa aqui
   filme.addEventListener('error', function () {
@@ -335,39 +338,56 @@ const MOSTRAR_PEDIDO = true;
 
   observarReveals();
 
-  /* ── som opcional (audio/valsa.mp3) ──────────────────────────── */
+  /* ── valsa (Chopin, Lá menor B.150) ──────────────────────────── */
 
+  const VALSA_SRC = 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f9/Chopin_-_Waltz_in_A_minor,_B_150.ogg/Chopin_-_Waltz_in_A_minor,_B_150.ogg.mp3';
   const botaoSom = $('#sound');
 
-  // a primeira impressao e a cena, nao a interface: o botao entra depois
-  depois(() => botaoSom.classList.add('is-visivel'), 2600);
+  depois(() => botaoSom.classList.add('is-visivel'), 1800);
 
   let valsa = null;
 
-  botaoSom.addEventListener('click', function () {
-    if (!valsa) {
-      valsa = new Audio('https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f9/Chopin_-_Waltz_in_A_minor,_B_150.ogg/Chopin_-_Waltz_in_A_minor,_B_150.ogg.mp3');
-      valsa.loop = true;
-      valsa.volume = 0.35;
-      valsa.addEventListener('error', function () {
-        botaoSom.classList.add('is-missing');
-        botaoSom.setAttribute('aria-pressed', 'false');
-        botaoSom.title = 'Coloque um MP3 em audio/valsa.mp3 para ouvir a valsa.';
-        $('.sound__label').textContent = 'Sem áudio';
-      });
-    }
-
-    const tocando = botaoSom.getAttribute('aria-pressed') === 'true';
-    if (tocando) {
-      valsa.pause();
+  function criarValsa() {
+    if (valsa) return valsa;
+    valsa = new Audio(VALSA_SRC);
+    valsa.loop = true;
+    valsa.volume = 0.35;
+    valsa.addEventListener('error', function () {
+      botaoSom.classList.add('is-missing');
       botaoSom.setAttribute('aria-pressed', 'false');
-      botaoSom.setAttribute('aria-label', 'Ligar o som da valsa');
+      botaoSom.title = 'Não rolou carregar a valsa.';
+      $('.sound__label').textContent = 'Sem áudio';
+    });
+    return valsa;
+  }
+
+  function marcarSom(ligado) {
+    botaoSom.setAttribute('aria-pressed', ligado ? 'true' : 'false');
+    botaoSom.setAttribute('aria-label', ligado ? 'Desligar o som da valsa' : 'Ligar o som da valsa');
+  }
+
+  function tocarValsa() {
+    criarValsa();
+    const p = valsa.play();
+    if (p && p.then) {
+      p.then(function () { marcarSom(true); }).catch(function () { marcarSom(false); });
     } else {
-      const p = valsa.play();
-      if (p && p.catch) p.catch(function () { /* navegador barrou: o erro acima cuida */ });
-      botaoSom.setAttribute('aria-pressed', 'true');
-      botaoSom.setAttribute('aria-label', 'Desligar o som da valsa');
+      marcarSom(true);
     }
+  }
+
+  function pausarValsa() {
+    if (valsa) valsa.pause();
+    marcarSom(false);
+  }
+
+  // tenta assim que a página abre; se o navegador barrar, o primeiro toque liga
+  tocarValsa();
+
+  botaoSom.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (botaoSom.getAttribute('aria-pressed') === 'true') pausarValsa();
+    else tocarValsa();
   });
 
   /* ── atalho: link "ir à viagem" pula direto ──────────────────── */
