@@ -17,7 +17,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 
 <body>
@@ -42,18 +42,17 @@
   <div class="stage">
 
     <!-- ── ATO 1 · O envelope lacrado ─────────────────────────────── -->
-    <section class="act act--center" id="act-envelope" aria-label="Envelope lacrado">
-      <div class="lamp" aria-hidden="true"></div>
+    <section class="act abertura" id="act-envelope" aria-label="Um envelope lacrado, endereçado a Marta">
+      <video class="abertura__video" id="filme" src="video/envelope.mp4" poster="video/poster.jpg"
+        muted autoplay playsinline preload="auto"></video>
 
-      <p class="callig-to">Para: Miss Marta Nogueira</p>
+      <div class="abertura__veu" aria-hidden="true"></div>
 
-      <div class="filme">
-        <video class="filme__video" id="filme" src="video/envelope.mp4"
-          muted autoplay playsinline preload="auto" aria-label="Um envelope lacrado com selo de cera dourado"></video>
-        <button type="button" class="filme__toque" id="abrir" aria-label="Abrir o convite"></button>
-      </div>
+      <p class="abertura__para">Para: Miss Marta Nogueira</p>
 
-      <p class="whisper" id="dica">Toque para abrir</p>
+      <p class="abertura__dica" id="dica">Toque para abrir</p>
+
+      <button type="button" class="abertura__toque" id="abrir" aria-label="Abrir o convite"></button>
     </section>
 
     <!-- ── ATO 2 · O convite ──────────────────────────────────────── -->
@@ -414,7 +413,7 @@
     </main>
   </div>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 
   <!--
   ══════════════════════════════════════════════════════════════════

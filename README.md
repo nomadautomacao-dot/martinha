@@ -70,9 +70,13 @@ Para trocar, basta substituir o arquivo mantendo o nome.
 
 ## O vídeo de abertura
 
-`video/envelope.mp4` — toca sozinho, mudo, em velocidade 2× (os 10s viram 5s).
-Quando termina, o aviso embaixo muda para “toque para abrir o convite”.
-Ela pode tocar a qualquer momento para pular.
+`video/envelope.mp4` ocupa a tela inteira, sem moldura: a caligrafia e o
+convite ao toque ficam por cima da cena. Toca sozinho, mudo, em velocidade 2×
+(os 10s viram 5s). Quando termina, o aviso embaixo muda para “toque para abrir
+o convite”. Qualquer toque na tela abre — ela não precisa mirar em nada.
+
+`video/poster.jpg` é o primeiro quadro, exibido enquanto o vídeo carrega,
+para não haver retângulo preto na primeira impressão.
 
 Se o arquivo faltar ou não carregar, o site não trava: o aviso aparece
 mesmo assim e o toque leva ao convite.

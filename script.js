@@ -55,6 +55,8 @@ const MOSTRAR_PEDIDO = true;
 
   /* ── ATO 1 · o filme do envelope ─────────────────────────────── */
 
+  document.body.classList.add('abertura-ativa');
+
   const filme = $('#filme');
   const abrir = $('#abrir');
   const dica = $('#dica');
@@ -81,8 +83,12 @@ const MOSTRAR_PEDIDO = true;
     if (jaAbriu) return;
     jaAbriu = true;
     filme.pause();
-    $('.filme').classList.add('is-gone');
-    depois(() => irPara('invite'), 700);
+    $('#act-envelope').classList.add('is-gone');
+    // a trava so sai depois do zoom, senao a barra de rolagem pisca
+    depois(() => {
+      document.body.classList.remove('abertura-ativa');
+      irPara('invite');
+    }, 700);
   }
 
   abrir.addEventListener('click', abrirConvite);
@@ -90,7 +96,7 @@ const MOSTRAR_PEDIDO = true;
   // se o video nao carregar, ela nao pode ficar presa aqui
   filme.addEventListener('error', function () {
     dica.textContent = 'Toque para abrir o convite';
-    $('.filme').classList.add('sem-video');
+    $('#act-envelope').classList.add('sem-video');
   });
 
   /* ── ATO 2 · aceitar o convite (a explosão dourada) ──────────── */
@@ -332,6 +338,10 @@ const MOSTRAR_PEDIDO = true;
   /* ── som opcional (audio/valsa.mp3) ──────────────────────────── */
 
   const botaoSom = $('#sound');
+
+  // a primeira impressao e a cena, nao a interface: o botao entra depois
+  depois(() => botaoSom.classList.add('is-visivel'), 2600);
+
   let valsa = null;
 
   botaoSom.addEventListener('click', function () {

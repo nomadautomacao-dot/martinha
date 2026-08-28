@@ -47,6 +47,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Durante a abertura não há nada para rolar, e o zoom de saída da cena
+   fazia piscar uma barra de rolagem bem no momento mais bonito. */
+body.abertura-ativa,
+html:has(body.abertura-ativa) {
+  overflow: hidden;
+}
+
 body {
   background: var(--ink);
   color: var(--ivory);
@@ -116,36 +123,69 @@ a:hover {
 /* ── botão de som ──────────────────────────────────────────────── */
 
 .sound {
+  /* entra 2,6s depois: o primeiro olhar e para a cena, nao para o botao */
+  opacity: 0;
+  pointer-events: none;
   position: fixed;
-  right: 12px;
-  top: 12px;
+  right: 14px;
+  top: 14px;
   z-index: 70;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 40px;
-  padding: 0 13px;
-  border: 1px solid rgba(201, 162, 39, .45);
-  border-radius: 2px;
-  background: rgba(20, 18, 16, .72);
-  backdrop-filter: blur(6px);
-  color: rgba(228, 214, 169, .8);
-  font-family: var(--title);
-  font-size: 9.5px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(201, 162, 39, .38);
+  border-radius: 50%;
+  background: rgba(20, 18, 16, .55);
+  backdrop-filter: blur(8px);
+  color: rgba(228, 214, 169, .78);
   cursor: pointer;
-  transition: color .3s ease, border-color .3s ease;
+  transition: color .3s ease, border-color .3s ease, background .3s ease, opacity 1.1s ease;
+}
+
+.sound.is-visivel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* uma piscada só, quando aparece, para ela reparar que existe */
+.sound.is-visivel {
+  animation: notarSom 2.4s 1.2s ease-in-out 2;
+}
+
+@keyframes notarSom {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(201, 162, 39, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(201, 162, 39, .13);
+  }
 }
 
 .sound:hover,
 .sound[aria-pressed="true"] {
   color: #F2E6BE;
   border-color: var(--gold);
+  background: rgba(201, 162, 39, .16);
+}
+
+/* o rótulo sai: o símbolo já diz, e a cena agradece */
+.sound__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .sound__icon {
-  font-size: 13px;
+  font-size: 15px;
+  line-height: 1;
 }
 
 .sound.is-missing {
@@ -170,10 +210,6 @@ a:hover {
   animation: fadeIn 1.2s ease both;
 }
 
-#act-envelope {
-  gap: 34px;
-}
-
 #act-ticket {
   animation: materialize 1.5s cubic-bezier(.2, .8, .2, 1) both;
 }
@@ -196,27 +232,6 @@ a:hover {
 
 /* ═══ ATO 1 · envelope ═══════════════════════════════════════════ */
 
-.lamp {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(70vw, 300px);
-  height: 230px;
-  background: radial-gradient(60% 100% at 50% 0%, rgba(201, 162, 39, .34), rgba(201, 162, 39, 0) 70%);
-  animation: lampFlicker 6s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.callig-to {
-  font-family: var(--hand);
-  font-size: 30px;
-  line-height: 1.2;
-  color: var(--gold-pale);
-  text-align: center;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, .6);
-}
-
 .whisper {
   font-family: var(--title);
   font-size: 11px;
@@ -226,62 +241,135 @@ a:hover {
   text-align: center;
 }
 
-/* ── o filme de abertura ───────────────────────────────────────── */
+/* ── ATO 1 · a abertura ────────────────────────────────────────── */
 
-.filme {
+/* Sangra até as bordas: ela não olha para um vídeo numa página,
+   ela olha para um envelope sobre a mesa. Por isso nada de moldura,
+   nada de caixa, e o texto vive por cima da cena. */
+.abertura {
   position: relative;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100svh;
   /* acima do grão de papel (z-index 60): a mistura "overlay" apagava
-     o dourado do lacre e deixava o vídeo barrento */
+     o dourado do lacre e deixava a cena barrenta */
   z-index: 61;
-  width: min(86vw, 340px);
-  aspect-ratio: 9 / 16;
-  max-height: 58vh;
-  border: 1px solid rgba(201, 162, 39, .45);
-  box-shadow: 0 26px 44px rgba(0, 0, 0, .66), 0 0 0 5px rgba(20, 18, 16, .6);
-  background: #0D0B09;
   overflow: hidden;
-  transition: transform 1s cubic-bezier(.22, 1, .36, 1), opacity .7s ease;
+  background: #0D0B09;
+  display: grid;
+  transition: transform 1.1s cubic-bezier(.22, 1, .36, 1), opacity .8s ease;
 }
 
-.filme.is-gone {
-  transform: translateY(-14px) scale(1.04);
+/* O zoom de saída vai no vídeo, não na seção: a seção tem overflow
+   hidden e recorta o excesso, então a página nunca transborda nem
+   pisca barra de rolagem. */
+.abertura.is-gone {
   opacity: 0;
 }
 
-.filme__video {
+.abertura.is-gone .abertura__video,
+.abertura.is-gone .abertura__veu {
+  transform: scale(1.07);
+}
+
+.abertura__video,
+.abertura__veu {
+  transition: transform 1.1s cubic-bezier(.22, 1, .36, 1);
+}
+
+.abertura__video,
+.abertura__veu,
+.abertura__toque {
+  grid-area: 1 / 1;
   width: 100%;
   height: 100%;
+}
+
+.abertura__video {
   object-fit: cover;
   display: block;
 }
 
-/* a área toda é o botão: o dedo não precisa mirar */
-.filme__toque {
-  position: absolute;
-  inset: 0;
+/* escurece só as pontas, para o texto ter onde pousar sem
+   apagar o lacre no centro */
+.abertura__veu {
+  background:
+    linear-gradient(to bottom,
+      rgba(13, 11, 9, .78) 0%,
+      rgba(13, 11, 9, .28) 22%,
+      rgba(13, 11, 9, 0) 42%,
+      rgba(13, 11, 9, 0) 58%,
+      rgba(13, 11, 9, .42) 78%,
+      rgba(13, 11, 9, .86) 100%);
+  pointer-events: none;
+}
+
+.abertura__para,
+.abertura__dica {
+  grid-area: 1 / 1;
+  z-index: 2;
+  justify-self: center;
+  text-align: center;
+  pointer-events: none;
+  animation: subirNaCena 1.6s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.abertura__para {
+  align-self: start;
+  margin-top: clamp(38px, 9vh, 78px);
+  padding: 0 24px;
+  font-family: var(--hand);
+  /* uma linha só: "Nogueira" sozinha embaixo desequilibra a cena */
+  font-size: clamp(24px, 7.4vw, 34px);
+  line-height: 1.15;
+  white-space: nowrap;
+  color: #F2E6BE;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, .9), 0 0 44px rgba(0, 0, 0, .7);
+}
+
+.abertura__dica {
+  align-self: end;
+  margin-bottom: clamp(40px, 9vh, 80px);
+  padding: 0 24px;
+  font-family: var(--title);
+  font-size: 10.5px;
+  letter-spacing: .38em;
+  text-indent: .38em;
+  text-transform: uppercase;
+  color: rgba(242, 230, 190, .82);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .9);
+  animation: subirNaCena 1.6s .5s cubic-bezier(.22, 1, .36, 1) both,
+             respirar 3s 2.1s ease-in-out infinite;
+}
+
+/* a tela inteira é o botão: o dedo não precisa mirar */
+.abertura__toque {
+  z-index: 3;
   border: 0;
+  padding: 0;
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* se o vídeo não carregar, ela ainda vê para onde tocar */
-.filme.sem-video {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 3 / 2;
-  background: linear-gradient(160deg, #EFE3C6, #D6C39A);
+@keyframes subirNaCena {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.is-chamando {
-  animation: pulsarDica 2.2s ease-in-out infinite;
-}
-
-@keyframes pulsarDica {
+@keyframes respirar {
 
   0%,
   100% {
-    opacity: .6;
+    opacity: .58;
   }
 
   50% {
