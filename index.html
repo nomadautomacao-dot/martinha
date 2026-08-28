@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Idade Dourada — Miss Marta Nogueira</title>
+  <meta name="description"
+    content="Um convite de primeira classe para Miss Marta Nogueira. Ferrovia Adriel &amp; Co., Nova York, 1882." />
+  <meta name="theme-color" content="#141210" />
+  <!-- presente particular: o link chega pelo QR, não por busca -->
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect fill='%23141210' width='64' height='64' rx='8'/%3E%3Ccircle cx='32' cy='32' r='22' fill='%23C9A227'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='28' font-family='Georgia' fill='%23141210'%3EM%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <a class="skip" href="#act-voyage">Ir direto à viagem</a>
+
+  <button type="button" class="sound" id="sound" aria-pressed="false" aria-label="Ligar o som da valsa">
+    <span class="sound__icon" aria-hidden="true">♫</span>
+    <span class="sound__label">Som</span>
+  </button>
+
+  <!-- vapor da locomotiva, ligado pelo JS nas transições -->
+  <div class="steam" id="steam" aria-hidden="true" hidden>
+    <span class="steam__puff steam__puff--1"></span>
+    <span class="steam__puff steam__puff--2"></span>
+    <span class="steam__puff steam__puff--3"></span>
+    <span class="steam__puff steam__puff--4"></span>
+  </div>
+
+  <!-- brilho dourado ao aceitar o convite, preenchido pelo JS -->
+  <div class="magic" id="magic" aria-hidden="true" hidden></div>
+
+  <div class="stage">
+
+    <!-- ── ATO 1 · O envelope lacrado ─────────────────────────────── -->
+    <section class="act act--center" id="act-envelope" aria-label="Envelope lacrado">
+      <div class="lamp" aria-hidden="true"></div>
+
+      <p class="callig-to">Para: Miss Marta Nogueira</p>
+
+      <div class="envelope" id="envelope">
+        <div class="envelope__paper" aria-hidden="true"></div>
+        <div class="envelope__sheen" aria-hidden="true"></div>
+        <div class="envelope__pocket" aria-hidden="true"></div>
+        <div class="envelope__flap" id="flap" aria-hidden="true"></div>
+
+        <button type="button" class="seal" id="seal" aria-label="Quebrar o lacre e abrir o envelope">
+          <span class="seal__wax" id="wax">
+            <span class="seal__ring" aria-hidden="true"></span>
+            <span class="seal__letter">M</span>
+          </span>
+          <span class="seal__shard seal__shard--l" aria-hidden="true"></span>
+          <span class="seal__shard seal__shard--r" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <p class="whisper">Toque o lacre dourado</p>
+    </section>
+
+    <!-- ── ATO 2 · O convite ──────────────────────────────────────── -->
+    <section class="act act--invite" id="act-invite" aria-label="O convite" hidden>
+      <article class="invite" id="invite">
+        <div class="invite__sheet">
+          <div class="invite__grain" aria-hidden="true"></div>
+          <div class="invite__glow" aria-hidden="true"></div>
+          <div class="invite__rule-outer" aria-hidden="true"></div>
+          <div class="invite__rule-inner" aria-hidden="true"></div>
+          <span class="corner corner--tl" aria-hidden="true"></span>
+          <span class="corner corner--tr" aria-hidden="true"></span>
+          <span class="corner corner--bl" aria-hidden="true"></span>
+          <span class="corner corner--br" aria-hidden="true"></span>
+          <span class="leaf leaf--tl" aria-hidden="true">❧</span>
+          <span class="leaf leaf--tr" aria-hidden="true">❧</span>
+          <span class="leaf leaf--bl" aria-hidden="true">❧</span>
+          <span class="leaf leaf--br" aria-hidden="true">❧</span>
+
+          <div class="invite__inner">
+            <div class="crest">
+              <span class="crest__flourish" aria-hidden="true">❦</span>
+              <span class="crest__medallion">M</span>
+              <span class="crest__flourish" aria-hidden="true">❦</span>
+            </div>
+
+            <div class="invite__company">
+              <p class="invite__co">Ferrovia Adriel &amp; C.<sup>ia</sup></p>
+              <p class="invite__city">Nova York · MDCCCLXXXII</p>
+            </div>
+
+            <div class="divider" aria-hidden="true">
+              <span class="divider__line"></span>
+              <span class="divider__star">✦</span>
+              <span class="divider__line"></span>
+            </div>
+
+            <p class="invite__lead">Tem a honra de anunciar que</p>
+            <h1 class="invite__name">Miss Marta Nogueira</h1>
+            <p class="invite__lead">é cordialmente convidada para uma</p>
+            <p class="invite__journey">Jornada de Primeira Classe</p>
+
+            <div class="invite__facts">
+              <p class="fact">
+                <span class="fact__label">Embarque</span>
+                <span class="fact__value">hoje, ao pôr do sol</span>
+              </p>
+              <p class="fact">
+                <span class="fact__label">Destino</span>
+                <span class="fact__value">uma homenagem à aniversariante mais elegante da cidade</span>
+              </p>
+            </div>
+
+            <p class="invite__rsvp">Traje de gala ✦ Assento reservado<br />R.S.V.P. ao portador do lacre</p>
+
+            <button type="button" class="btn btn--invite" id="accept">Aceitar o convite</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ── ATO 3 · O bilhete ──────────────────────────────────────── -->
+    <section class="act act--center" id="act-ticket" aria-label="Bilhete de primeira classe" hidden>
+      <p class="whisper">Guiche da estação · Bilhete emitido</p>
+
+      <article class="ticket">
+        <div class="ticket__body">
+          <div class="ticket__frame" aria-hidden="true"></div>
+
+          <header class="ticket__head">
+            <p class="ticket__co">Ferrovia<br />Adriel &amp; Co.</p>
+            <p class="ticket__class">Primeiríssima<br />classe</p>
+          </header>
+
+          <div class="ticket__grid">
+            <div class="field">
+              <span class="field__label">Passageira</span>
+              <strong class="field__value">M. Nogueira</strong>
+            </div>
+            <div class="field field--right">
+              <span class="field__label">Assento</span>
+              <strong class="field__value">1-A</strong>
+            </div>
+            <div class="field field--wide">
+              <span class="field__label">Origem</span>
+              <strong class="field__value field__value--italic">Seu aniversário</strong>
+            </div>
+            <div class="field">
+              <span class="field__label">Destino</span>
+              <strong class="field__value">Felicidade</strong>
+            </div>
+            <div class="field field--right">
+              <span class="field__label">Embarque</span>
+              <strong class="field__value">Imediato</strong>
+            </div>
+          </div>
+
+          <p class="ticket__meta">Bilhete Nº 1882-M · não transferível</p>
+          <div class="ticket__paid" aria-hidden="true">PAGO</div>
+        </div>
+      </article>
+
+      <button type="button" class="btn btn--board" id="board">Embarcar</button>
+      <p class="ticket__note">A locomotiva já solta vapor na plataforma.</p>
+    </section>
+
+    <!-- ── ATO 4 · A viagem ───────────────────────────────────────── -->
+    <main class="act act--voyage" id="act-voyage" aria-label="A viagem de primeira classe" hidden>
+
+      <!-- Estação I -->
+      <section class="station station--first">
+        <p class="sign">Estação I<br /><span class="sign__sub">A Coluna Social</span></p>
+
+        <article class="news js-reveal">
+          <p class="news__kicker">The New York Ledger · Outono de 1882 · Um centavo</p>
+          <p class="news__section">Sociedade</p>
+          <h2 class="news__hed">A senhorita Marta Nogueira completa hoje mais um ano</h2>
+          <p class="news__deck">A cidade inteira comenta — e os salões não se cansam de repetir: jamais a alta
+            sociedade contemplou elegância tão serena reunida numa só pessoa.</p>
+
+          <div class="news__cols">
+            <p><span class="news__drop">R</span>elata-se, com a discrição que a ocasião exige e o entusiasmo que
+              ninguém consegue disfarçar, que Miss Marta Nogueira reúne, num só semblante, o brilho que a Quinta
+              Avenida tanto ensaiou e a graça que Paris jamais conseguiu pôr à venda. Os salões murmuram. Os
+              jornais, como se vê, também.</p>
+            <p>Há quem a compare às grandes damas da estação. Equívoco amável: Marta não imita a época. A época é
+              que, por um instante, parece à altura dela.</p>
+            <p>A Companhia Adriel &amp; Co., que raramente se ocupa de fofocas mundanas, faz desta vez uma exceção.
+              Reserva à senhorita o assento 1-A.</p>
+          </div>
+
+          <div class="news__note">
+            <p>O restante desta nota, porém, não cabe em coluna social.</p>
+            <p>Há um recado que só ela deve ler — e que espera, com a devida formalidade, na página seguinte.</p>
+          </div>
+
+          <p class="news__sig">— Da nossa correspondente na alta sociedade</p>
+        </article>
+      </section>
+
+      <!-- Estação II -->
+      <section class="station">
+        <p class="sign">Estação II<br /><span class="sign__sub">A Galeria</span></p>
+        <p class="station__intro js-reveal">Retratos de salão, pendurados às pressas para a sua chegada.</p>
+
+        <div class="gallery">
+          <figure class="frame js-reveal" style="--tilt:-2.4deg">
+            <div class="frame__gold">
+              <div class="frame__glass">
+                <span class="frame__mono" aria-hidden="true">M</span>
+                <img src="fotos/foto1.jpg" alt="Retrato de Adriel e Marta" loading="lazy" class="frame__img" />
+              </div>
+            </div>
+            <figcaption class="frame__cap">Prêmio: um jantar juntos.</figcaption>
+          </figure>
+
+          <figure class="frame js-reveal" style="--tilt:2deg">
+            <div class="frame__gold">
+              <div class="frame__glass">
+                <span class="frame__mono" aria-hidden="true">M</span>
+                <img src="fotos/foto2.jpg" alt="Retrato de Adriel e Marta" loading="lazy" class="frame__img" />
+              </div>
+            </div>
+            <figcaption class="frame__cap">Essa é a minha foto preferida.</figcaption>
+          </figure>
+      </section>
+
+      <!-- Estação III -->
+      <section class="station">
+        <p class="sign">Estação III<br /><span class="sign__sub">Os Motivos</span></p>
+        <p class="station__intro js-reveal">Toque cada carta. A época guardava seus segredos no baralho.</p>
+
+        <div class="cards" id="cards">
+          <button type="button" class="card" aria-label="Virar a carta I — Seriedade" aria-pressed="false">
+            <span class="card__inner">
+              <span class="card__back">
+                <span class="card__numeral">I</span>
+                <span class="card__title">Seriedade</span>
+                <span class="card__pip" aria-hidden="true">❧</span>
+                <span class="card__hint">Vire</span>
+              </span>
+              <span class="card__face">Uma das pessoas mais sérias que já conheci.</span>
+            </span>
+          </button>
+
+          <button type="button" class="card" aria-label="Virar a carta II — Princípios" aria-pressed="false">
+            <span class="card__inner">
+              <span class="card__back">
+                <span class="card__numeral">II</span>
+                <span class="card__title">Princípios</span>
+                <span class="card__pip" aria-hidden="true">❦</span>
+                <span class="card__hint">Vire</span>
+              </span>
+              <span class="card__face">Mulher de valores e princípios.</span>
+            </span>
+          </button>
+
+          <button type="button" class="card" aria-label="Virar a carta III — O tempo" aria-pressed="false">
+            <span class="card__inner">
+              <span class="card__back">
+                <span class="card__numeral">III</span>
+                <span class="card__title">O tempo</span>
+                <span class="card__pip" aria-hidden="true">✦</span>
+                <span class="card__hint">Vire</span>
+              </span>
+              <span class="card__face">Distorce meu espaço e tempo. Horas ao seu lado se tornam minutos.</span>
+            </span>
+          </button>
+
+          <button type="button" class="card" aria-label="Virar a carta IV — Felicidade" aria-pressed="false">
+            <span class="card__inner">
+              <span class="card__back">
+                <span class="card__numeral">IV</span>
+                <span class="card__title">Felicidade</span>
+                <span class="card__pip" aria-hidden="true">❧</span>
+                <span class="card__hint">Vire</span>
+              </span>
+              <span class="card__face">A felicidade nos encontrou.</span>
+            </span>
+          </button>
+
+          <button type="button" class="card" aria-label="Virar a carta V — Beleza" aria-pressed="false">
+            <span class="card__inner">
+              <span class="card__back">
+                <span class="card__numeral">V</span>
+                <span class="card__title">Beleza</span>
+                <span class="card__pip" aria-hidden="true">❦</span>
+                <span class="card__hint">Vire</span>
+              </span>
+              <span class="card__face">Linda é pouco. Perfeição seria mais adequado.</span>
+            </span>
+          </button>
+
+          <button type="button" class="card" aria-label="Virar a carta VI — Garra" aria-pressed="false">
+            <span class="card__inner">
+              <span class="card__back">
+                <span class="card__numeral">VI</span>
+                <span class="card__title">Garra</span>
+                <span class="card__pip" aria-hidden="true">✦</span>
+                <span class="card__hint">Vire</span>
+              </span>
+              <span class="card__face">Dois empregos. Não é pra todo mundo — tem garra sobrando.</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Estação IV -->
+      <section class="station">
+        <p class="sign">Estação IV<br /><span class="sign__sub">Os Compromissos da Companhia</span></p>
+        <p class="station__intro js-reveal">Compromissos da companhia. Sele cada um — aqui promessa não é força de expressão.</p>
+
+        <div class="coupons" id="coupons">
+          <article class="coupon js-reveal">
+            <div class="coupon__stub">
+              <p class="coupon__no">Nº</p>
+              <p class="coupon__num">001</p>
+            </div>
+            <h3 class="coupon__title">Fidelidade: meu lugar é seu, e não se divide com ninguém.</h3>
+            <div class="coupon__action">
+              <button type="button" class="coupon__btn">Selar</button>
+              <span class="coupon__stamp" aria-hidden="true">Selado ✦<br />Adriel &amp; Co.</span>
+            </div>
+          </article>
+
+          <article class="coupon js-reveal">
+            <div class="coupon__stub">
+              <p class="coupon__no">Nº</p>
+              <p class="coupon__num">002</p>
+            </div>
+            <h3 class="coupon__title">Suas batalhas passam a ser minhas. Você não luta sozinha.</h3>
+            <div class="coupon__action">
+              <button type="button" class="coupon__btn">Selar</button>
+              <span class="coupon__stamp" aria-hidden="true">Selado ✦<br />Adriel &amp; Co.</span>
+            </div>
+          </article>
+
+          <article class="coupon js-reveal">
+            <div class="coupon__stub">
+              <p class="coupon__no">Nº</p>
+              <p class="coupon__num">003</p>
+            </div>
+            <h3 class="coupon__title">Nos dias bons e nos ruins, o assento ao seu lado continua meu.</h3>
+            <div class="coupon__action">
+              <button type="button" class="coupon__btn">Selar</button>
+              <span class="coupon__stamp" aria-hidden="true">Selado ✦<br />Adriel &amp; Co.</span>
+            </div>
+          </article>
+
+          <article class="coupon js-reveal">
+            <div class="coupon__stub">
+              <p class="coupon__no">Nº</p>
+              <p class="coupon__num">004</p>
+            </div>
+            <h3 class="coupon__title">A verdade sempre, mesmo quando calar for mais confortável.</h3>
+            <div class="coupon__action">
+              <button type="button" class="coupon__btn">Selar</button>
+              <span class="coupon__stamp" aria-hidden="true">Selado ✦<br />Adriel &amp; Co.</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Destino final -->
+      <section class="station station--final">
+        <p class="sign sign--final">Destino final<br /><span class="sign__dest">Felicidade</span></p>
+
+        <article class="letter js-reveal">
+          <div class="letter__frame" aria-hidden="true"></div>
+          <div class="letter__inner">
+            <p class="letter__star" aria-hidden="true">✦</p>
+            <p class="letter__p">Marta, a cidade pode ficar com a coluna social — eu fico com o assento ao seu lado.
+              Nos conhecemos há pouco tempo, e já é engraçado como o pouco tempo com você vale mais do que anos
+              inteiros sem.</p>
+            <p class="letter__p">Que este ano lhe traga o que a Quinta Avenida nunca soube oferecer: alguém que torce
+              por você todos os dias, sem precisar de um baile para dizer isso.</p>
+            <p class="letter__close">Com toda a minha admiração e carinho,</p>
+            <p class="letter__sign">Adriel</p>
+          </div>
+        </article>
+
+        <aside class="baggage js-reveal">
+          <p class="baggage__label">Bagagem despachada</p>
+          <p class="baggage__text">O presente que viaja com este bilhete é simples, e a companhia não vê nisso
+            defeito algum. Foi escolhido com carinho e é entregue com prazer — que é, no fim, a única coisa que se
+            pede de um presente.</p>
+        </aside>
+
+        <!-- O pedido. Para esconder, veja MOSTRAR_PEDIDO no topo do script.js -->
+        <div class="proposal js-reveal" id="proposal">
+          <p class="proposal__kicker">Há mais uma parada no itinerário</p>
+
+          <button type="button" class="proposal__seal" id="proposalSeal"
+            aria-label="Romper o último lacre e revelar a surpresa">
+            <span class="proposal__wax">
+              <span class="seal__ring" aria-hidden="true"></span>
+              <span class="proposal__letter">A</span>
+            </span>
+            <span class="proposal__tease">Um segredo viaja lacrado neste vagão.</span>
+            <span class="proposal__hint">Toque para romper o lacre</span>
+          </button>
+
+          <div class="proposal__reveal" id="proposalReveal" hidden>
+            <h2 class="proposal__ask" data-type="1" data-speed="60">Marta, quer namorar comigo?</h2>
+            <p class="proposal__body" data-type="2" data-speed="16">Não é pressa: é certeza. Quero o teu nome no meu
+              bilhete, o assento ao teu lado e o resto do trajeto — o longo, o sério, o bonito — contigo.</p>
+            <button type="button" class="btn btn--yes" id="yes" hidden>Eu aceito</button>
+          </div>
+
+          <div class="proposal__sealed" id="proposalSealed" hidden>
+            <p class="proposal__sealedTitle">Então está selado.</p>
+            <p class="proposal__sealedSub"><span id="selo-momento">Neste dia e nesta hora</span> · Residência
+              dos Nogueira, Agrovila 10 · compromisso selado.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+
+  <!--
+  ══════════════════════════════════════════════════════════════════
+  EDITAR AQUI — troque os textos entre colchetes por dentro do HTML
+  ══════════════════════════════════════════════════════════════════
+
+  Estação II — as legendas das fotos
+    Prêmio: um jantar juntos. e Essa é a minha foto preferida.
+    As imagens são fotos/foto1.jpg e fotos/foto2.jpg.
+    Para acrescentar fotos depois, veja o README.
+    Se faltar um arquivo, a moldura mostra um "M" dourado e não quebra.
+
+  Estação III — o verso das cartas
+    Os seis motivos já estão escritos, direto no HTML acima
+    (procure por class="card__face"). Troque à vontade — cada carta
+    comporta uns 75 caracteres sem apertar.
+
+  Destino final — o recado sobre o presente
+    Procure por class="baggage__text". É o espaço reservado para a sua
+    fala sobre o presente; troque o texto à vontade, sem mexer no resto.
+
+  Ligar/desligar o pedido de namoro
+    No topo do script.js: MOSTRAR_PEDIDO = true (ou false)
+
+  Cor do dourado e intensidade do movimento
+    No topo do style.css: --gold e --sway
+
+  Som opcional
+    Crie a pasta audio/ e coloque audio/valsa.mp3. Nada toca sozinho.
+  ══════════════════════════════════════════════════════════════════
+  -->
+</body>
+
+</html>

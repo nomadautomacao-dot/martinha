@@ -1,0 +1,11 @@
+{
+  "name": "a-idade-dourada",
+  "private": true,
+  "description": "Presente estático — npm só para abrir localmente",
+  "scripts": {
+    "dev": "serve . -l 5173 --no-clipboard"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
